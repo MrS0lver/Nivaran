@@ -1,225 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CivicLine — Complaint Management Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nivaran — Complaint Management Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="site-header">
-  <div class="header-inner">
-    <div class="seal-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.3l-4.8 2.6.9-5.4-3.9-3.8 5.4-.8L12 2z" stroke="#C9B889" stroke-width="1.3" stroke-linejoin="round"/></svg>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">N</div>
+      <div>
+        <div class="brand-name">Nivaran</div>
+        <div class="brand-sub">Complaint Management Portal</div>
+      </div>
     </div>
-    <div class="brand-text">
-      <span class="brand-name">CivicLine</span>
-      <span class="brand-sub">Complaint Management Portal</span>
-    </div>
-    <div class="header-spacer"></div>
-    <div class="header-meta">Office Hours: Mon–Fri, 9:00–17:00<br><strong>Helpline 1800-11-2026</strong></div>
+    <button class="mobile-toggle" onclick="document.querySelector('nav.tabs').classList.toggle('open')">Menu</button>
+    <nav class="tabs">
+      <button class="tab-btn active" data-page="home"><span class="n"></span>Home</button>
+      <button class="tab-btn" data-page="submit"><span class="n"></span>Submit</button>
+      <button class="tab-btn" data-page="track"><span class="n"></span>Track</button>
+      <button class="tab-btn" data-page="dashboard"><span class="n"></span>Dashboard</button>
+      <button class="tab-btn" data-page="login"><span class="n"></span>Login</button>
+    </nav>
   </div>
-  <nav class="tab-bar" role="tablist" aria-label="Portal sections">
-    <button class="tab-btn active" data-view="submit" role="tab" aria-selected="true"><span class="tab-num">01</span>File a Complaint</button>
-    <button class="tab-btn" data-view="track" role="tab" aria-selected="false"><span class="tab-num">02</span>Track Status</button>
-    <button class="tab-btn" data-view="dashboard" role="tab" aria-selected="false"><span class="tab-num">03</span>Department Dashboard</button>
-  </nav>
-</header>
+</div>
 
 <main>
 
-  <!-- ============ VIEW 1: SUBMIT ============ -->
-  <section id="view-submit" class="view active">
-    <div class="view-head">
-      <span class="eyebrow">Case Intake</span>
-      <h1>File a Complaint</h1>
-      <p>Report an issue with a public service. Every submission receives a unique tracking number and is routed to the department responsible.</p>
-    </div>
-
-    <div class="grid-2">
-      <div class="card">
-        <form id="complaint-form" novalidate>
-          <div class="field" id="f-category">
-            <label for="category">Service category</label>
-            <select id="category" required>
-              <option value="">Select the category that best fits your issue</option>
-              <option value="Sanitation">Sanitation &amp; Waste Collection</option>
-              <option value="Roads">Roads &amp; Infrastructure</option>
-              <option value="Water">Water Supply</option>
-              <option value="Electricity">Electricity &amp; Power</option>
-              <option value="Billing">Billing &amp; Payments</option>
-              <option value="Other">Other</option>
-            </select>
-            <div class="err">Select a category so we can route your complaint correctly.</div>
-          </div>
-
-          <div class="field" id="f-desc">
-            <label for="description">Describe what happened</label>
-            <textarea id="description" maxlength="600" placeholder="Include what occurred, when, and where — the more detail, the faster we can act." required></textarea>
-            <div class="char-count"><span id="char-count">0</span>/600</div>
-            <div class="err">Add a short description — at least 20 characters — so the department has enough to act on.</div>
-          </div>
-
-          <div class="field" id="f-location">
-            <label for="location">Location <span style="font-weight:400;color:var(--slate-soft)">(street, landmark, or area)</span></label>
-            <input type="text" id="location" placeholder="e.g. Sector 12 Market Road, near City Park" />
-            <div class="hint">Attaching a location helps us analyse issues that are specific to your area.</div>
-          </div>
-
-          <div class="field">
-            <label>Supporting media <span style="font-weight:400;color:var(--slate-soft)">(optional)</span></label>
-            <label class="upload-box" for="media">
-              <div>Click to attach photos or documents (JPG, PNG, PDF — up to 10MB)</div>
-              <input type="file" id="media" multiple />
-            </label>
-            <div id="file-list"></div>
-          </div>
-
-          <div class="field">
-            <label>Submit as</label>
-            <div class="radio-row">
-              <label class="radio-opt"><input type="radio" name="idmode" value="named" checked /> Named — I'll provide contact details</label>
-              <label class="radio-opt"><input type="radio" name="idmode" value="anon" /> Anonymous — for sensitive issues</label>
-            </div>
-          </div>
-
-          <div id="named-fields">
-            <div class="field" id="f-name">
-              <label for="fullname">Full name</label>
-              <input type="text" id="fullname" placeholder="As you'd like to be addressed" />
-              <div class="err">Enter your name, or switch to an anonymous submission.</div>
-            </div>
-            <div class="field" id="f-contact">
-              <label for="contact">Email or phone</label>
-              <input type="text" id="contact" placeholder="So we can share status updates" />
-              <div class="err">Enter a way to reach you, or switch to an anonymous submission.</div>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block">Submit Complaint</button>
-        </form>
-      </div>
-
+  <!-- ============ HOME ============ -->
+  <section class="page active" id="home">
+    <div class="hero">
       <div>
-        <div class="card">
-          <h3 style="font-size:16px; margin-bottom:14px;">What happens after you submit</h3>
-          <ul class="notice-list">
-            <li><span class="dot"></span><div><strong>Instant routing</strong><span>Your complaint is assigned to the responsible department automatically, by category.</span></div></li>
-            <li><span class="dot"></span><div><strong>A tracking number</strong><span>You'll receive a unique reference to check progress at any time.</span></div></li>
-            <li><span class="dot"></span><div><strong>SLA-backed timeline</strong><span>Each category carries a resolution deadline; missed deadlines trigger escalation.</span></div></li>
-            <li><span class="dot"></span><div><strong>Feedback after closure</strong><span>Once resolved, you'll be asked to rate how the matter was handled.</span></div></li>
-          </ul>
-        </div>
-        <div class="card" style="background:var(--ink); border-color:var(--ink);">
-          <h3 style="font-size:15px; color:#fff; margin-bottom:8px;">Sensitive complaint?</h3>
-          <p style="font-size:13px; color:#B7C0D6; margin:0;">You can submit anonymously at any time. We still route and act on anonymous cases with the same priority — we simply won't hold any of your personal details.</p>
+        <span class="eyebrow">Digital Grievance Redressal</span>
+        <h1>Every complaint gets a number. Every number gets an answer.</h1>
+        <p class="lead">Register a complaint, get a tracking ID in seconds, and follow it from submission to resolution &mdash; without a single office visit.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="goTo('submit')">File a Complaint →</button>
+          <button class="btn btn-outline" onclick="goTo('track')">Track Existing Complaint</button>
         </div>
       </div>
-    </div>
-
-    <!-- Confirmation panel (hidden until submit) -->
-    <div class="card" id="confirmation-card" style="display:none; margin-top:24px;">
-      <div class="confirm-wrap">
-        <div class="ring-seal">
-          <svg class="tick" width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="ticket-preview">
+        <div class="qr" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i>
         </div>
-        <h2 style="font-size:19px;">Complaint received</h2>
-        <p style="color:var(--slate); font-size:13.5px; margin:8px 0 4px;">Your tracking number is</p>
-        <div class="tracking-id" id="new-tracking-id">CMP-2026-000000</div>
-        <p style="color:var(--slate); font-size:12.5px; margin-top:10px;">Save this number to check your status at any time in the Track Status tab.</p>
-        <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
-          <button class="btn btn-secondary" id="btn-track-new">Track this complaint</button>
-          <button class="btn btn-primary" id="btn-file-another">File another complaint</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ VIEW 2: TRACK ============ -->
-  <section id="view-track" class="view">
-    <div class="view-head">
-      <span class="eyebrow">Case Lookup</span>
-      <h1>Track Your Complaint</h1>
-      <p>Enter the tracking number you received at submission to see live status and history.</p>
-    </div>
-
-    <div class="track-search">
-      <input type="text" id="track-input" placeholder="e.g. CMP-2026-000104" />
-      <button class="btn btn-primary" id="track-btn">Track</button>
-    </div>
-
-    <div id="track-empty" class="empty-state">
-      Enter a tracking number above to view its status. Try <strong>CMP-2026-000104</strong> from the sample case list.
-    </div>
-
-    <div id="track-result" style="display:none;">
-      <div class="card" style="margin-top:26px;">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+        <div class="tk-row">
           <div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--slate-soft);" id="tr-id"></div>
-            <h2 style="font-size:20px; margin-top:4px;" id="tr-category"></h2>
+            <span class="tk-label">Tracking ID</span>
+            <div class="tk-id">CMP-7K3XQ2</div>
           </div>
-          <span class="badge" id="tr-badge"></span>
         </div>
-
-        <div class="status-rail" id="tr-rail"></div>
-
-        <div class="detail-grid">
-          <div class="detail-item"><div class="k">Department</div><div class="v" id="tr-dept"></div></div>
-          <div class="detail-item"><div class="k">Filed on</div><div class="v" id="tr-filed"></div></div>
-          <div class="detail-item"><div class="k">Resolution deadline</div><div class="v" id="tr-sla"></div></div>
+        <span class="tk-badge">In Progress</span>
+        <div class="tk-meta">
+          <div><span class="k">Category</span><span class="v">Water Supply</span></div>
+          <div><span class="k">Filed On</span><span class="v">08 Jul 2026</span></div>
+          <div><span class="k">Department</span><span class="v">Municipal Corp.</span></div>
+          <div><span class="k">SLA</span><span class="v">3 days left</span></div>
         </div>
+      </div>
+    </div>
 
-        <div style="margin-top:22px;">
-          <div class="k" style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--slate-soft); margin-bottom:8px;">Description on file</div>
-          <p style="font-size:13.5px; color:var(--ink-2); margin:0;" id="tr-desc"></p>
+    <div class="stats-strip">
+      <div class="stat"><div class="num">2,438</div><div class="lbl">Complaints Registered</div></div>
+      <div class="stat"><div class="num">91%</div><div class="lbl">Resolved Within SLA</div></div>
+      <div class="stat"><div class="num">1.8 days</div><div class="lbl">Avg. Resolution Time</div></div>
+      <div class="stat"><div class="num">12</div><div class="lbl">Departments Connected</div></div>
+    </div>
+
+    <div class="section-head">
+      <h2>How it moves through the system</h2>
+      <p>A single complaint touches five stages between filing and closure &mdash; each one logged and visible to the citizen who filed it.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step"><div class="dot"></div><div class="t">Submitted</div></div>
+      <div class="flow-step"><div class="dot"></div><div class="t">Tracking ID Issued</div></div>
+      <div class="flow-step"><div class="dot"></div><div class="t">Routed to Department</div></div>
+      <div class="flow-step"><div class="dot"></div><div class="t">Under Review</div></div>
+      <div class="flow-step"><div class="dot"></div><div class="t">Resolved</div></div>
+    </div>
+
+    <div class="section-head">
+      <h2>Built for how complaints actually work</h2>
+      <p>Core capabilities from the project scope, translated into what a citizen and an officer each experience.</p>
+    </div>
+    <div class="grid-3">
+      <div class="feat"><div class="idx">Auto-routing</div><h3>Right department, first time</h3><p>Complaints are assigned by category automatically, cutting out the manual sorting step that causes most delays.</p></div>
+      <div class="feat"><div class="idx">Live tracking</div><h3>One ID, full history</h3><p>Citizens check status anytime with their tracking ID instead of calling or visiting an office.</p></div>
+      <div class="feat"><div class="idx">Analytics</div><h3>See the pattern, not just the case</h3><p>Departments spot recurring issues and measure their own resolution performance over time.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ SUBMIT ============ -->
+  <section class="page" id="submit">
+    <div class="section-head">
+      <span class="eyebrow">Step 02 — Register</span>
+      <h2>File a new complaint</h2>
+      <p>Fill in the details below. You'll receive a tracking ID immediately after submitting &mdash; save it to check your status later.</p>
+    </div>
+
+    <div class="panel">
+      <form id="complaintForm" onsubmit="return submitComplaint(event)">
+        <div class="form-grid">
+          <div class="field">
+            <label for="fname">Full Name</label>
+            <input type="text" id="fname" required placeholder="e.g. Ankita Sharma">
+          </div>
+          <div class="field">
+            <label for="femail">Email Address</label>
+            <input type="email" id="femail" required placeholder="you@example.com">
+          </div>
+          <div class="field full">
+            <label for="fcat">Complaint Category</label>
+            <select id="fcat" required>
+              <option value="">Select a category…</option>
+              <option>Water Supply</option>
+              <option>Electricity</option>
+              <option>Road & Infrastructure</option>
+              <option>Sanitation & Waste</option>
+              <option>Public Safety</option>
+              <option>Billing / Payments</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="fdesc">Description</label>
+            <textarea id="fdesc" required placeholder="Describe the issue — location, date it started, and any relevant detail."></textarea>
+          </div>
+          <div class="field full">
+            <label>Supporting Media (optional)</label>
+            <div class="upload-box">
+              <strong>Click to upload</strong> or drag a photo / document here
+              <div style="margin-top:6px; font-size:11px;">This is a UI preview — files aren't actually uploaded in this demo.</div>
+            </div>
+          </div>
         </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:13px;">Submit Complaint</button>
+      </form>
+
+      <div class="result-ticket" id="resultTicket">
+        <div class="ticket-preview" style="transform:rotate(-0.6deg);">
+          <div class="qr" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="tk-row">
+            <div>
+              <span class="tk-label">Your Tracking ID</span>
+              <div class="tk-id" id="newTicketId">CMP-000000</div>
+            </div>
+          </div>
+          <span class="tk-badge" style="background:var(--indigo);">Submitted</span>
+          <div class="tk-meta">
+            <div><span class="k">Category</span><span class="v" id="newTicketCat">—</span></div>
+            <div><span class="k">Filed On</span><span class="v" id="newTicketDate">—</span></div>
+            <div><span class="k">Department</span><span class="v" id="newTicketDept">—</span></div>
+            <div><span class="k">Status</span><span class="v">Awaiting Review</span></div>
+          </div>
+        </div>
+        <p class="status-line ok">Complaint registered. Save this ID to track its progress — try it on the Track page.</p>
       </div>
     </div>
   </section>
 
-  <!-- ============ VIEW 3: DASHBOARD ============ -->
-  <section id="view-dashboard" class="view">
-    <div class="view-head">
-      <span class="eyebrow">Staff Access</span>
-      <h1>Department Dashboard</h1>
-      <p>Manage assigned complaints, update status, and monitor SLA deadlines across departments.</p>
+  <!-- ============ TRACK ============ -->
+  <section class="page" id="track">
+    <div class="section-head">
+      <span class="eyebrow">Step 03 — Follow up</span>
+      <h2>Track your complaint</h2>
+      <p>Enter your tracking ID to see its current stage. Try <strong>CMP-7K3XQ2</strong> for a sample, or track one you just filed.</p>
+    </div>
+    <div class="panel panel-narrow" style="max-width:640px;">
+      <div class="track-search">
+        <input type="text" id="trackInput" placeholder="e.g. CMP-7K3XQ2" class="mono">
+        <button class="btn btn-amber" onclick="trackComplaint()">Track</button>
+      </div>
+      <div class="not-found" id="notFound">No complaint found with that tracking ID. Double-check the code and try again.</div>
+
+      <div class="timeline" id="timeline" style="display:none;">
+        <div class="tl-item" data-step="0"><div class="tl-dot"><i></i></div><div class="tl-body"><div class="t">Complaint Submitted</div><div class="d">Received and logged into the system.</div></div></div>
+        <div class="tl-item" data-step="1"><div class="tl-dot"><i></i></div><div class="tl-body"><div class="t">Tracking ID Issued</div><div class="d">Unique ID generated for status lookups.</div></div></div>
+        <div class="tl-item" data-step="2"><div class="tl-dot"><i></i></div><div class="tl-body"><div class="t">Routed to Department</div><div class="d">Assigned automatically based on category.</div></div></div>
+        <div class="tl-item" data-step="3"><div class="tl-dot"><i></i></div><div class="tl-body"><div class="t">Under Review</div><div class="d">Department officer is assessing the case.</div></div></div>
+        <div class="tl-item" data-step="4"><div class="tl-dot"><i></i></div><div class="tl-body"><div class="t">Resolved</div><div class="d">Issue closed and citizen notified.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DASHBOARD ============ -->
+  <section class="page" id="dashboard">
+    <div class="section-head">
+      <span class="eyebrow">Administrator View</span>
+      <h2>Analytics dashboard</h2>
+      <p>A department-level snapshot of complaint volume, resolution speed, and recurring categories.</p>
     </div>
 
-    <div class="stat-row" id="stat-row"></div>
-
-    <div class="filter-bar">
-      <select id="filter-dept"><option value="">All departments</option></select>
-      <select id="filter-status">
-        <option value="">All statuses</option>
-        <option>Open</option>
-        <option>In Progress</option>
-        <option>Resolved</option>
-        <option>Escalated</option>
-      </select>
-      <input type="text" id="filter-search" placeholder="Search tracking ID or keyword…" />
-      <span class="results-count" id="results-count"></span>
+    <div class="dash-grid">
+      <div class="kpi"><div class="num">2,438</div><div class="lbl">Total Complaints</div></div>
+      <div class="kpi amber"><div class="num">312</div><div class="lbl">Currently Open</div></div>
+      <div class="kpi green"><div class="num">2,019</div><div class="lbl">Resolved</div></div>
+      <div class="kpi red"><div class="num">107</div><div class="lbl">Overdue (SLA breached)</div></div>
     </div>
 
-    <div class="card" style="padding:0; overflow-x:auto;">
-      <table>
-        <thead>
-          <tr>
-            <th>Tracking ID</th><th>Category</th><th>Department</th><th>Filed</th><th>SLA</th><th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="dash-body"></tbody>
-      </table>
+    <div class="dash-cols">
+      <div class="card">
+        <h3>Complaints by category <span>this quarter</span></h3>
+        <div class="bar-row"><div>Water Supply</div><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><div>612</div></div>
+        <div class="bar-row"><div>Electricity</div><div class="bar-track"><div class="bar-fill amber" style="width:64%"></div></div><div>498</div></div>
+        <div class="bar-row"><div>Road & Infra</div><div class="bar-track"><div class="bar-fill slate" style="width:52%"></div></div><div>410</div></div>
+        <div class="bar-row"><div>Sanitation</div><div class="bar-track"><div class="bar-fill green" style="width:45%"></div></div><div>355</div></div>
+        <div class="bar-row"><div>Public Safety</div><div class="bar-track"><div class="bar-fill red" style="width:30%"></div></div><div>238</div></div>
+        <div class="bar-row"><div>Billing</div><div class="bar-track"><div class="bar-fill" style="width:25%"></div></div><div>198</div></div>
+
+        <h3 style="margin-top:28px;">Recent complaints <span>live feed</span></h3>
+        <table class="data-table" id="recentTable">
+          <thead><tr><th>Tracking ID</th><th>Category</th><th>Status</th><th>Filed</th></tr></thead>
+          <tbody id="recentTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Status breakdown</h3>
+        <div class="donut-wrap">
+          <svg width="130" height="130" viewBox="0 0 42 42" style="flex-shrink:0;">
+            <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#e8ecf5" stroke-width="6"></circle>
+            <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#3a7d5c" stroke-width="6"
+              stroke-dasharray="83 100" stroke-dashoffset="25" transform="rotate(-90 21 21)"></circle>
+            <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#e8a33d" stroke-width="6"
+              stroke-dasharray="13 100" stroke-dashoffset="-58" transform="rotate(-90 21 21)"></circle>
+            <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#c0453a" stroke-width="6"
+              stroke-dasharray="4 100" stroke-dashoffset="-71" transform="rotate(-90 21 21)"></circle>
+          </svg>
+          <div class="legend">
+            <div class="legend-item"><span class="swatch" style="background:var(--green);"></span>Resolved — 83%</div>
+            <div class="legend-item"><span class="swatch" style="background:var(--amber);"></span>In progress — 13%</div>
+            <div class="legend-item"><span class="swatch" style="background:var(--red);"></span>Overdue — 4%</div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:28px;">Avg. resolution by department</h3>
+        <div class="bar-row"><div>Municipal Corp.</div><div class="bar-track"><div class="bar-fill" style="width:60%"></div></div><div>1.6d</div></div>
+        <div class="bar-row"><div>Electricity Bd.</div><div class="bar-track"><div class="bar-fill amber" style="width:74%"></div></div><div>2.1d</div></div>
+        <div class="bar-row"><div>PWD</div><div class="bar-track"><div class="bar-fill slate" style="width:88%"></div></div><div>3.0d</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOGIN ============ -->
+  <section class="page" id="login">
+    <div class="section-head">
+      <span class="eyebrow">Access your account</span>
+      <h2>Log in or register</h2>
+      <p>Citizens, department officers, and administrators use the same portal with role-based access.</p>
+    </div>
+    <div class="panel panel-narrow">
+      <div style="display:flex; gap:0; margin-bottom:26px; border:1px solid var(--line);">
+        <button class="btn" id="loginTabBtn" style="flex:1; justify-content:center; background:var(--indigo); color:#fff; border-radius:0;" onclick="switchAuth('login')">Log In</button>
+        <button class="btn" id="registerTabBtn" style="flex:1; justify-content:center; background:transparent; color:var(--indigo); border-radius:0;" onclick="switchAuth('register')">Register</button>
+      </div>
+
+      <form id="loginForm" onsubmit="return doLogin(event)">
+        <div class="field">
+          <label for="lemail">Email Address</label>
+          <input type="email" id="lemail" required placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="lpass">Password</label>
+          <input type="password" id="lpass" required placeholder="••••••••">
+        </div>
+        <div class="field">
+          <label for="lrole">Role</label>
+          <select id="lrole">
+            <option>Citizen</option>
+            <option>Department Officer</option>
+            <option>Administrator</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:13px;">Log In</button>
+        <div class="status-line ok" id="loginMsg" style="display:none;"></div>
+      </form>
+
+      <form id="registerForm" style="display:none;" onsubmit="return doRegister(event)">
+        <div class="field">
+          <label for="rname">Full Name</label>
+          <input type="text" id="rname" required placeholder="e.g. Ankita Sharma">
+        </div>
+        <div class="field">
+          <label for="remail">Email Address</label>
+          <input type="email" id="remail" required placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="rpass">Password</label>
+          <input type="password" id="rpass" required placeholder="Create a password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:13px;">Create Account</button>
+        <div class="status-line ok" id="registerMsg" style="display:none;"></div>
+      </form>
     </div>
   </section>
 
 </main>
 
 <footer>
-  <span>© 2026 CivicLine Public Services · Complaint Management Portal</span>
-  <span>Frontend prototype — data shown is illustrative sample data, held in memory for this session.</span>
+  <div>Nivaran — Complaint Management Portal · Academic Project Demo</div>
+  <div class="mono">Frontend prototype · no backend connected</div>
 </footer>
 
 <script src="script.js"></script>
